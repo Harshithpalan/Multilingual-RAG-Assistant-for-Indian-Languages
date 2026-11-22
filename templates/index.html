@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual RAG Assistant - Indian Languages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .languages {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .lang-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+
+        .upload-area p {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            background: #f8f9ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .file-item.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .query-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .query-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .query-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-area {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            min-height: 150px;
+        }
+
+        .response-label {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .response-text {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .language-detected {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .source-docs {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .status-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇮🇳 Multilingual RAG Assistant</h1>
+            <p>Ask questions in Hindi, Tamil, Telugu, or Bengali</p>
+            <div class="languages">
+                <span class="lang-badge">हिंदी (Hindi)</span>
+                <span class="lang-badge">தமிழ் (Tamil)</span>
+                <span class="lang-badge">తెలుగు (Telugu)</span>
+                <span class="lang-badge">বাংলা (Bengali)</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>📄 Upload Documents</h2>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📁</div>
+                    <p>Click to upload or drag and drop</p>
+                    <p style="font-size: 0.8rem; margin-top: 5px;">Text files (.txt)</p>
+                </div>
+                <input type="file" id="fileInput" accept=".txt" onchange="uploadFile()">
+                <div class="file-list" id="fileList"></div>
+            </div>
+
+            <div class="card">
+                <h2>💬 Ask a Question</h2>
+                <div class="query-section">
+                    <textarea 
+                        class="query-input" 
+                        id="queryInput" 
+                        placeholder="Type your question in any supported Indian language..."
+                    ></textarea>
+                    <button class="btn" onclick="query()" id="queryBtn">Ask Question</button>
+                </div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px;">Processing your query...</p>
+                </div>
+                <div class="response-area" id="responseArea" style="display: none;">
+                    <div class="response-label">
+                        Answer
+                        <span class="language-detected" id="detectedLang"></span>
+                    </div>
+                    <div class="response-text" id="responseText"></div>
+                    <div class="source-docs" id="sourceDocs"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>System Status: <strong id="systemStatus">Loading...</strong></span>
+            </div>
+            <div class="status-item">
+                <span>Documents: <strong id="docCount">0</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check system status on load
+        checkStatus();
+
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                document.getElementById('systemStatus').textContent = data.status;
+                document.getElementById('docCount').textContent = data.document_count;
+            } catch (error) {
+                document.getElementById('systemStatus').textContent = 'Error';
+            }
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const fileList = document.getElementById('fileList');
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span>${file.name}</span>
+                <span>Uploading...</span>
+            `;
+            fileList.appendChild(fileItem);
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    fileItem.classList.add('success');
+                    fileItem.innerHTML = `
+                        <span>${file.name}</span>
+                        <span>✓ Uploaded</span>
+                    `;
+                    checkStatus();
+                } else {
+                    fileItem.classList.add('error');
+                    fileItem.innerHTML = `
+                        <span>${file.name}</span>
+                        <span>✗ ${data.error}</span>
+                    `;
+                }
+            } catch (error) {
+                fileItem.classList.add('error');
+                fileItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <span>✗ Upload failed</span>
+                `;
+            }
+        }
+
+        async function query() {
+            const queryInput = document.getElementById('queryInput');
+            const question = queryInput.value.trim();
+            
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const responseArea = document.getElementById('responseArea');
+            const queryBtn = document.getElementById('queryBtn');
+
+            loading.classList.add('active');
+            responseArea.style.display = 'none';
+            queryBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('detectedLang').textContent = data.detected_language;
+                    document.getElementById('responseText').textContent = data.answer;
+                    document.getElementById('sourceDocs').textContent = 
+                        'Source documents: ' + (data.source_documents.join(', ') || 'None');
+                    responseArea.style.display = 'block';
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                loading.classList.remove('active');
+                queryBtn.disabled = false;
+            }
+        }
+
+        // Allow Enter key to submit query (with Ctrl or Cmd)
+        document.getElementById('queryInput').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                query();
+            }
+        });
+    </script>
+</body>
+</html>

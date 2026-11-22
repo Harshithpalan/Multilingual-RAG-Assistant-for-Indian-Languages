@@ -1,0 +1,21 @@
+Sample Document for Multilingual RAG Assistant
+
+This is a sample document that you can upload to test the RAG assistant. The assistant can understand and respond in multiple Indian languages.
+
+English Section:
+India is a diverse country with many languages and cultures. It has 28 states and 8 union territories. The capital of India is New Delhi. India gained independence from British rule on August 15, 1947.
+
+Hindi Section:
+भारत एक विविध देश है जिसमें कई भाषाएं और संस्कृतियां हैं। भारत में 28 राज्य और 8 केंद्र शासित प्रदेश हैं। भारत की राजधानी नई दिल्ली है। भारत ने 15 अगस्त 1947 को ब्रिटिश शासन से स्वतंत्रता प्राप्त की।
+
+Tamil Section:
+இந்தியா பல மொழிகள் மற்றும் கலாச்சாரங்களைக் கொண்ட ஒரு பன்முகத் தன்மை கொண்ட நாடு. இந்தியாவில் 28 மாநிலங்கள் மற்றும் 8 ஒன்றிய பிரதேசங்கள் உள்ளன. இந்தியாவின் தலைநகரம் புது தில்லி. இந்தியா ஆகஸ்ட் 15, 1947 அன்று பிரிட்டிஷ் ஆட்சியிலிருந்து சுதந்திரம் பெற்றது.
+
+Telugu Section:
+భారతదేశం అనేక భాషలు మరియు సంస్కృతులతో వైవిధ్యమైన దేశం. భారతదేశంలో 28 రాష్ట్రాలు మరియు 8 కేంద్రపాలిత ప్రాంతాలు ఉన్నాయి. భారతదేశం రాజధాని న్యూఢిల్లీ. భారతదేశం ఆగస్ట్ 15, 1947న బ్రిటిష్ పాలన నుండి స్వాతంత్ర్యం పొందింది.
+
+Bengali Section:
+ভারত একটি বৈচিত্র্যময় দেশ যার মধ্যে অনেক ভাষা এবং সংস্কৃতি রয়েছে। ভারতে ২৮টি রাজ্য এবং ৮টি কেন্দ্রশাসিত অঞ্চল রয়েছে। ভারতের রাজধানী নতুন দিল্লি। ভারত ১৫ আগস্ট, ১৯৪৭ সালে ব্রিটিশ শাসন থেকে স্বাধীনতা অর্জন করেছিল।
+
+Additional Information:
+The national animal of India is the Bengal Tiger. The national bird is the Peacock. The national flower is the Lotus. The currency of India is the Indian Rupee (INR).
